@@ -18,24 +18,24 @@
     <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Users.cpp">
+    <ClCompile Include="User.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="UserManagement.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Display.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Users.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="FileWork.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="User.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="UserManagement.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

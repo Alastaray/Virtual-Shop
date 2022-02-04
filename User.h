@@ -8,6 +8,7 @@ class User
 {
 public:
 	User(unsigned int id, const char* nickname, const char* password, unsigned int rank);
+	User(const User& user);
 	~User();
 	char* GetNickname() { return nickname; }
 	char* GetPassword() { return password; }
