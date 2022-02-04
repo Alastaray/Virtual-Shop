@@ -9,10 +9,16 @@ void main()
 		switch (Display::DrawMainMenu())
 		{
 		case 0:
-			management.AddUser();
+			management.SingUp();
 			break;
 		case 1:
-			management.ShowUsers();
+			switch (management.SingIn())
+			{
+			case 1:
+				break;
+			case 2:
+				break;
+			}
 			break;
 		case 2:
 			return;

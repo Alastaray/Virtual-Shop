@@ -10,14 +10,26 @@ namespace Display
 		cls();
 		int size = 1;
 		std::cout <<
-			"0. Sing up\n" <<
-			"1. Sing in\n" <<
-			"2. Exit\n";
+			"\n\t0. Sing up\n" <<
+			"\t1. Sing in\n" <<
+			"\t2. Exit\n";
 		return GetNumber(size, '2');
 	}
-	int GetNumber(unsigned int amount_symbols, char to_number = Nine, char from_number = Zero)
-	{		
-		if ((to_number < Zero || to_number > Nine) || (from_number < Zero || from_number > Nine)) 
+	std::pair<const char*, const char*> DrawEnterMenu(unsigned nickname_size, unsigned password_size)
+	{
+		if (!nickname_size || !password_size)
+			throw std::exception("nickname's size or password's size can't be null");
+		char* nickname = new char[nickname_size];
+		char* password = new char[password_size];
+		std::cout << "Enter the your nickname!\n";
+		Display::GetStr(nickname_size, nickname);
+		std::cout << "Enter the your password!\n";
+		Display::GetData(password_size, password);
+		return { nickname, password };
+	}
+	int GetNumber(unsigned amount_symbols, char to_number, char from_number)
+	{
+		if ((to_number < Zero || to_number > Nine) || (from_number < Zero || from_number > Nine))
 			throw std::exception("Unknown number symbol!");
 		char* buff = new char[amount_symbols + 1];
 		char key;
@@ -42,7 +54,7 @@ namespace Display
 		delete[]buff;
 		return num;
 	}
-	void GetStr(unsigned int amount_symbols, char* destination)
+	void GetStr(unsigned amount_symbols, char* destination)
 	{
 		char* buff = new char[amount_symbols + 1];
 		char key;
@@ -64,9 +76,9 @@ namespace Display
 		}
 		buff[i] = '\0';
 		strcpy_s(destination, i + 1, buff);
-		delete[]buff;	
+		delete[]buff;
 	}
-	void GetData(unsigned int amount_symbols, char* destination)
+	void GetData(unsigned amount_symbols, char* destination)
 	{
 		char* buff = new char[amount_symbols + 1];
 		char key;

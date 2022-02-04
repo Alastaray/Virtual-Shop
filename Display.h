@@ -17,8 +17,8 @@ namespace Display
 	void cls();
 	int DrawMainMenu();
 	int DrawEmployeeMenu();
-	void DrawRegistrationMenu();
-	int GetNumber(unsigned int amount_symbols, char to_number = Nine, char from_number = Zero);
-	void GetStr(unsigned int amount_symbols, char* destination);
-	void GetData(unsigned int amount_symbols, char* destination);
+	std::pair<const char*, const char*> DrawEnterMenu(unsigned nickname_size, unsigned password_size);
+	int GetNumber(unsigned amount_symbols, char to_number = Nine, char from_number = Zero);
+	void GetStr(unsigned amount_symbols, char* destination);
+	void GetData(unsigned amount_symbols, char* destination);
 }
