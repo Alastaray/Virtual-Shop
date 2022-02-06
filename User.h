@@ -3,7 +3,6 @@
 
 
 
-
 class User
 {
 public:
@@ -14,13 +13,15 @@ public:
 	char* GetPassword() { return password; }
 	char* GetRank() { return rank; }
 	int GetId() { return id; }
+	double GetPurchaseAmount() { return purchase_amount; }
 	void SetNickname(const char* _nickname);
 	void SetPassword(const char* _password);
 	void SetRank(const char* _rank);
+	void SetPurchaseAmount(double _purchase_amount);
 protected:
 	char* nickname,
 		* password,
 		* rank;
-
-	unsigned int id;
+	unsigned id;
+	double purchase_amount;
 };

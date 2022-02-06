@@ -16,7 +16,7 @@ namespace Display
 			"\t2. Exit\n";
 		return GetNumber(size, '2');
 	}
-	std::pair<const char*, const char*> DrawEnterMenu(unsigned nickname_size, unsigned password_size)
+	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size)
 	{
 		if (!nickname_size || !password_size)
 			throw std::exception("nickname's size or password's size can't be null");
@@ -27,6 +27,40 @@ namespace Display
 		std::cout << "Enter the your password!\n";
 		Display::GetData(password_size, password);
 		return { nickname, password };
+	}
+	void DrawUser(std::vector<User*> users, unsigned index)
+	{
+		std::cout << "\t" <<
+			users[index]->GetId() << "\t" <<
+			users[index]->GetNickname() << "\t\t" <<
+			users[index]->GetPassword() << "\t\t" <<
+			users[index]->GetPurchaseAmount() << "\t\t" <<
+			users[index]->GetRank() << "\n";
+	}
+	void DrawProduct(std::vector<Product*> product, unsigned index)
+	{
+		std::cout << "\t" <<
+			product[index]->GetId() << "\t\t" <<
+			product[index]->GetName() << "\t\t" <<
+			product[index]->GetPrice() << "\t\t" <<
+			product[index]->GetAmount() << "\t\t"<<
+			product[index]->GetDiscount() * 100 << "%\t\t"<<
+			product[index]->GetStatusStock()<<"\n";
+	}
+	void DrawProducts(std::vector<Product*> products, bool all)
+	{
+		Display::cls();
+		std::cout <<
+			"\n\tId\t\t" << "Name\t\t" << "Price\t\t" << "Amount\t\t" << "Discount\t" << "Status stock\n";
+		for (size_t i = 0; i < products.size(); i++)
+		{
+			if(all)DrawProduct(products, i);
+			else
+			{
+				if(products[i]->GetStatusStock())
+					DrawProduct(products, i);
+			}
+		}
 	}
 	int DrawEmployeeMenu()
 	{
@@ -39,7 +73,7 @@ namespace Display
 			"\t3. Show customer, which have purchase amount is the highest\n" <<
 			"\t4. Add new product\n" <<
 			"\t5. Change inventory status\n" <<
-			"\t6. But something\n" <<
+			"\t6. Buy something\n" <<
 			"\t7. Back\n";
 		return GetNumber(size, '7');
 	}

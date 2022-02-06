@@ -1,9 +1,12 @@
 #include "UserManagement.h"
+#include "ProductsManagement.h"
 #include "Display.h"
 
 void main()
 {
-	UserManagement management;
+	std::cout.setf(std::ios::boolalpha);
+	UsersManagement users_management;
+	ProductsManagement products_management;
 	while (true)
 	{
 		try
@@ -11,12 +14,13 @@ void main()
 			switch (Display::DrawMainMenu())
 			{
 			case 0:
-				management.SingUp();
+				users_management.SignUp();
 				break;
 			case 1:				
-				switch (management.SingIn())
+				switch (users_management.SignIn())
 				{
 				case 1:
+					products_management.BuyProduct(users_management.GetCurrentUser());
 					break;
 				case 2:
 					int _case = -1;
@@ -26,20 +30,25 @@ void main()
 						switch (_case)
 						{
 						case 0:
-							management.ShowUsers();
+							users_management.ShowUsers();
 							break;
 						case 1:
-							management.ShowUsers(true);
+							users_management.ShowUsers(true);
 							break;
 						case 2:
+							users_management.ShowUsers(0, true);
 							break;
 						case 3:
+							users_management.ShowUserSpentMost();
 							break;
 						case 4:
+							products_management.AddProduct();
 							break;
 						case 5:
+							products_management.ChangeStatusStock(3);
 							break;
 						case 6:
+							products_management.BuyProduct(users_management.GetCurrentUser());
 							break;
 						}
 					}					

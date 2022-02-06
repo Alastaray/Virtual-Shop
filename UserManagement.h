@@ -3,29 +3,26 @@
 #include "User.h"
 #include "Display.h"
 
-class UserManagement
+
+
+
+class UsersManagement
 {
 public:
-	UserManagement()
-	{
-		nickname_size = 21;
-		password_size = 16;
-		ranks[NoVip] = "";
-		ranks[Vip] = "Vip";
-		ranks[Employee] = "Employee";
-		ranks[Manager] = "Manager";
-		ranks[Director] = "Director";
-	}
-	~UserManagement(){ users.clear(); }
-	void SingUp();
-	int SingIn();
-	void ShowUsers(bool vip = false);
+	UsersManagement();
+	~UsersManagement(){ users.clear(); }
+	void SignUp();
+	int SignIn();
+	void ShowUsers(bool is_vip = false, bool have_purchase = false);
+	void ShowUserSpentMost();
+	User* GetCurrentUser();
 protected:
 	std::vector<User*> users;
-	std::string ranks[5];
+	std::string user_ranks[5];
 	int nickname_size,
-		password_size;
-	enum Ranks
+		password_size,
+		current_user;
+	enum UserRankNumbers
 	{
 		NoVip,
 		Vip,
@@ -34,6 +31,8 @@ protected:
 		Director
 	};
 	bool IsCustomer(const char* rank);
+	bool IsUser(const char* nickname);
 	
 };
+
 

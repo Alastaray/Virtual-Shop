@@ -3,9 +3,11 @@
 
 
 
+
 User::User(unsigned int id, const char* nickname, const char* password, const char* rank)
 {
 	this->id = id;
+	this->purchase_amount = 0;
 	SetNickname(nickname);
 	SetPassword(password);
 	SetRank(rank);
@@ -13,6 +15,7 @@ User::User(unsigned int id, const char* nickname, const char* password, const ch
 User::User(const User& user)
 {
 	this->id = user.id;
+	this->purchase_amount = user.purchase_amount;
 	SetNickname(user.nickname);
 	SetPassword(user.password);
 	SetRank(user.rank);
@@ -42,4 +45,9 @@ void User::SetRank(const char* _rank)
 	int size = strlen(_rank) + 1;
 	rank = new char[size + 1];
 	strcpy_s(rank, size, _rank);
+}
+void User::SetPurchaseAmount(double _purchase_amount)
+{
+	if (_purchase_amount)
+		purchase_amount += _purchase_amount;
 }

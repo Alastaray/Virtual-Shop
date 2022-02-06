@@ -141,11 +141,15 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Product.cpp" />
+    <ClCompile Include="ProductsManagement.cpp" />
     <ClCompile Include="UserManagement.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h" />
+    <ClInclude Include="Product.h" />
+    <ClInclude Include="ProductsManagement.h" />
     <ClInclude Include="UserManagement.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
