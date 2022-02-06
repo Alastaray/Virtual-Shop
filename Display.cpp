@@ -1,9 +1,10 @@
 #include "Display.h"
 
+
+
+
 namespace Display
 {
-	
-
 	void cls() { system("cls"); }
 	int DrawMainMenu()
 	{
@@ -27,6 +28,21 @@ namespace Display
 		Display::GetData(password_size, password);
 		return { nickname, password };
 	}
+	int DrawEmployeeMenu()
+	{
+		cls();
+		int size = 1;
+		std::cout <<
+			"\n\t0. Show all users\n" <<
+			"\t1. Show all customers, which are vip\n" <<
+			"\t2. Show all customers, which have even bought one thing\n" <<
+			"\t3. Show customer, which have purchase amount is the highest\n" <<
+			"\t4. Add new product\n" <<
+			"\t5. Change inventory status\n" <<
+			"\t6. But something\n" <<
+			"\t7. Back\n";
+		return GetNumber(size, '7');
+	}
 	int GetNumber(unsigned amount_symbols, char to_number, char from_number)
 	{
 		if ((to_number < Zero || to_number > Nine) || (from_number < Zero || from_number > Nine))
@@ -38,17 +54,20 @@ namespace Display
 		{
 			std::cin.get(key);
 			if (key >= from_number && key <= to_number)buff[i++] = key;
-			else if (key == '\n')break;
+			else if (key == '\n' && i > 0)break;
 			else
 			{
 				std::cout << "Enter a correct number!\n";
-				delete[]buff;
-				buff = new char[amount_symbols + 1];
+				if (i)
+				{
+					delete[]buff;
+					buff = new char[amount_symbols + 1];
+					i = 0;
+				}			
 				std::cin.ignore(std::cin.rdbuf()->in_avail());
-				i = 0;
 			}
-			std::cin.ignore();
 		}
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
 		buff[i] = '\0';
 		int num = atoi(buff);
 		delete[]buff;
@@ -64,7 +83,7 @@ namespace Display
 			std::cin.get(key);
 			if ((key >= a && key <= z) || (key >= A && key <= Z && i == 0))
 				buff[i++] = key;
-			else if (key == '\n')break;
+			else if (key == '\n' && i > 0)break;
 			else
 			{
 				std::cout << "A string consists of more than just letters!\n";
@@ -74,6 +93,7 @@ namespace Display
 				i = 0;
 			}
 		}
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
 		buff[i] = '\0';
 		strcpy_s(destination, i + 1, buff);
 		delete[]buff;
@@ -88,7 +108,7 @@ namespace Display
 			std::cin.get(key);
 			if ((key >= a && key <= z) || (key >= A && key <= Z && i == 0) || (key >= Zero && key <= Nine))
 				buff[i++] = key;
-			else if (key == '\n')break;
+			else if (key == '\n' && i > 0)break;
 			else
 			{
 				std::cout << "A string consists of more than just letters!\n";
@@ -98,6 +118,7 @@ namespace Display
 				i = 0;
 			}
 		}
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
 		buff[i] = '\0';
 		strcpy_s(destination, i + 1, buff);
 		delete[]buff;

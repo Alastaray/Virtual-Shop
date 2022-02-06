@@ -3,14 +3,16 @@
 
 
 
-User::User(unsigned int id, const char* nickname, const char* password, unsigned int rank)
+User::User(unsigned int id, const char* nickname, const char* password, const char* rank)
 {
+	this->id = id;
 	SetNickname(nickname);
 	SetPassword(password);
 	SetRank(rank);
 }
 User::User(const User& user)
 {
+	this->id = user.id;
 	SetNickname(user.nickname);
 	SetPassword(user.password);
 	SetRank(user.rank);
@@ -34,8 +36,10 @@ void User::SetPassword(const char* _password)
 	password = new char[size + 1];
 	strcpy_s(password, size, _password);
 }
-void User::SetRank(unsigned int _rank)
+void User::SetRank(const char* _rank)
 {
-	if (_rank > 3)rank = 1;
-	rank = _rank;
+	if (rank)delete[]rank;
+	int size = strlen(_rank) + 1;
+	rank = new char[size + 1];
+	strcpy_s(rank, size, _rank);
 }

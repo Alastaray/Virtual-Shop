@@ -26,35 +26,20 @@ void UserManagement::SingUp()
 	}
 	else
 	{
-		std::cout << 
-			"\tEnter the your rank!\n"<<
-			"\tFor example:\n"<<
-			"\t2. Employee\n"<<
-			"\t3. Manager\n"<<
-			"\t4. Director\n";
+		std::cout <<
+			"\tEnter the your rank!\n" <<
+			"\tFor example:\n" <<
+			"\t2. " + ranks[Employee] + "\n" << 
+			"\t3. " + ranks[Manager] + "\n"<<
+			"\t4. " + ranks[Director] + "\n";
 		rank = Display::GetNumber(1, '4', '2');
 	}
 	
-	users.push_back(new User(id, user_data.first, user_data.second, rank));
+	users.push_back(new User(id, user_data.first, user_data.second, ranks[rank].c_str()));
 	id++;
 	std::cout << "Registration Success!\n";
 	delete[]user_data.first;
 	delete[]user_data.second;
-	_getch();
-}
-void UserManagement::ShowUsers()
-{
-	Display::cls();
-	std::cout <<
-		"\n\tId\t" << "Nickname\t" << "Password\t" << "Rank\n";
-	for (size_t i = 0; i < users.size(); i++)
-	{
-		std::cout <<"\t"<<
-			users[i]->GetId() << "\t" <<
-			users[i]->GetNickname() << "\t\t" <<
-			users[i]->GetPassword() << "\t\t" <<
-			users[i]->GetRank() << "\n";
-	}
 	_getch();
 }
 int UserManagement::SingIn()
@@ -78,25 +63,10 @@ int UserManagement::SingIn()
 		delete[]user_data.second;
 		if (registered)
 		{
-			std::cout << "Hello, " << users[i]->GetNickname();
-			switch (users[i]->GetRank())
-			{
-			case 1:
-				std::cout << " (VIP)\n";
-				break;
-			case 2:
-				std::cout << " (Employee)\n";
-				break;
-			case 3:
-				std::cout << " (Manager)\n";
-				break;
-			case 4:
-				std::cout << " (Director)\n";
-				break;
-			}
+			std::cout << "Hello, " << users[i]->GetNickname()<<" ("<< users[i]->GetRank() <<")";
 			_getch();
-			if (users[i]->GetRank() > 1)return 2;
-			else return 1;		
+			if (IsCustomer(users[i]->GetRank()))return 1;
+			else return 2;		
 		}
 		else
 		{
@@ -108,5 +78,27 @@ int UserManagement::SingIn()
 	else
 		std::cout << "No one hasn't registration yet!\n";
 	_getch();
+	return false;
+}
+void UserManagement::ShowUsers(bool vip)
+{
+	Display::cls();
+	std::cout <<
+		"\n\tId\t" << "Nickname\t" << "Password\t"<<"Rank\n";
+	int rank;
+	for (size_t i = 0; i < users.size(); i++)
+	{
+		std::cout << "\t" <<
+			users[i]->GetId() << "\t" <<
+			users[i]->GetNickname() << "\t\t" <<
+			users[i]->GetPassword() << "\t\t"<<
+			users[i]->GetRank() << "\n";
+	}
+	_getch();
+}
+bool UserManagement::IsCustomer(const char* rank)
+{
+	if (!strcmp(rank, ranks[NoVip].c_str()) || !strcmp(rank, ranks[Vip].c_str()))
+		return true;
 	return false;
 }
