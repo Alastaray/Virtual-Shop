@@ -1,4 +1,4 @@
-#include "UserManagement.h"
+#include "UsersManagement.h"
 
 
 
@@ -81,11 +81,7 @@ int UsersManagement::SignIn()
 			else return 2;		
 		}
 		else
-		{
-			std::cout << "Nickname or password is wrong!\n";
-			_getch();
-			return false;
-		}					
+			std::cout << "Nickname or password is wrong!\n";				
 	}
 	else
 		std::cout << "No one hasn't registration yet!\n";

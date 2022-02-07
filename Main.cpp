@@ -1,6 +1,5 @@
-#include "UserManagement.h"
+#include "UsersManagement.h"
 #include "ProductsManagement.h"
-#include "Display.h"
 
 void main()
 {
@@ -45,7 +44,7 @@ void main()
 							products_management.AddProduct();
 							break;
 						case 5:
-							products_management.ChangeStatusStock(3);
+							products_management.ChangeProductStatus();
 							break;
 						case 6:
 							products_management.BuyProduct(users_management.GetCurrentUser());
@@ -61,11 +60,8 @@ void main()
 		catch (const std::exception& er)
 		{
 			Display::cls();
-			std::cout<<er.what();
+			std::cout << er.what();
 			_getch();
-		}
-		
-	}
-	
-	
+		}	
+	}	
 }

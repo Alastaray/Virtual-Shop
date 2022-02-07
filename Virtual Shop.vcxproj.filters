@@ -21,7 +21,7 @@
     <ClCompile Include="User.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UserManagement.cpp">
+    <ClCompile Include="UsersManagement.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
@@ -38,7 +38,7 @@
     <ClInclude Include="User.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UserManagement.h">
+    <ClInclude Include="UsersManagement.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">

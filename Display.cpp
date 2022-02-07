@@ -98,7 +98,7 @@ namespace Display
 		}	
 		else
 		{
-			std::cout << "Product doesn't exist!";
+			std::cout << "Product was not added!";
 			_getch();
 		}
 	}
@@ -118,7 +118,13 @@ namespace Display
 						DrawProduct(products[i]);
 				}
 			}
-		}	
+		}
+		else
+		{
+			cls();
+			std::cout << "Products were not added!";
+			_getch();
+		}
 	}
 	void DrawShoppingBasket(std::vector<Product*>& bought_products, double purchase_amount)
 	{

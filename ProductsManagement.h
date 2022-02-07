@@ -9,12 +9,13 @@ public:
 	ProductsManagement() = default;
 	~ProductsManagement() { DeleteVector(products); }
 	void AddProduct();
-	void ChangeStatusStock(unsigned id) { Display::DrawProduct(products, true); _getch(); }
+	void ChangeProductStatus();
 	void BuyProduct(User* user);
 	int ChangeProductAmount(int index);
 	bool AreProductsStock();
 protected:
 	std::vector<Product*> products;
 	bool IsProduct(const char* name);
+	int RequestProductId();
 };
 

@@ -31,7 +31,7 @@ void ProductsManagement::BuyProduct(User* user)
 	{
 		if (user)
 		{
-			int id,
+			int id = 1,
 				purchase,
 				amount;
 			double purchase_amount = 0,
@@ -41,7 +41,7 @@ void ProductsManagement::BuyProduct(User* user)
 			{
 				Display::DrawProduct(products);
 				std::cout << "\nEnter an id for purchase product or 0 for return to menu:\n";
-				id = Display::GetNumber(products.size(), (products.size() > 9) ? Display::Nine : products.size() + Display::Zero);
+				id = RequestProductId();
 				if (!id)break;
 				id--;
 
@@ -63,15 +63,72 @@ void ProductsManagement::BuyProduct(User* user)
 			user->SetPurchaseAmount(purchase_amount);
 			DeleteVector(bought_products);
 		}
-		else std::cout << "User doen't exist!\n";
+		else
+		{
+			Display::cls();
+			std::cout << "User doesn't exist!\n";
+			_getch();
+		}
 	}
-	else std::cout << "Product is out of stock!\n";
+	else
+	{
+		Display::cls();
+		std::cout << "Products are out of stock!\n";
+		_getch();
+	}
+}
+void ProductsManagement::ChangeProductStatus()
+{
+	int id = 1,
+		amount;
+	bool status,
+		error = false;
+	while (true)
+	{
+		Display::DrawProduct(products, true);
+		std::cout << "\nEnter an id for change product's status or 0 for return to menu:\n";
+		id = RequestProductId();
+		if (!id)break;
+		id--;
+
+		std::cout <<
+			"0. Product is out of stock\n"<<
+			"1. Product is in of stock\n";
+		status = Display::GetNumber(1, '1');
+		if (status)
+		{
+			if (!products[id]->GetStatusStock())
+			{
+				std::cout << "Enter the product's amount:\n";
+				amount = Display::GetNumber(3);
+				products[id]->ChangeAmount(amount);
+				products[id]->SetStatusStock(status);
+			}
+			else error = true;				
+		}
+		else
+		{
+			if (products[id]->GetStatusStock())
+				products[id]->ChangeAmount(-products[id]->GetAmount());
+			else error = true;
+		}
+		if(error)
+		{
+			error = false;
+			std::cout << "You can't change status if it has already set!\n";
+			_getch();
+			continue;
+		}
+		std::cout << "Product's status was successfully changed!\n";
+		_getch();
+	}
+	
 }
 int ProductsManagement::ChangeProductAmount(int index)
 {
 	int amount;
 	std::cout << "Enter the product's amount:\n";
-	amount = Display::GetNumber(3, (products[index]->GetAmount() > 9) ? '9' : products[index]->GetAmount() + '0');
+	amount = Display::GetNumber(3, (products[index]->GetAmount() > 9) ? Display::Nine : products[index]->GetAmount() + Display::Zero);
 	if (amount >= products[index]->GetAmount())
 	{
 		amount = products[index]->GetAmount();
@@ -101,4 +158,9 @@ bool ProductsManagement::IsProduct(const char* name)
 			return true;
 	}
 	return false;
+}
+int ProductsManagement::RequestProductId()
+{
+	char number = (products.size() > 9) ? Display::Nine : products.size() + Display::Zero;
+	return Display::GetNumber(products.size(), number);
 }
