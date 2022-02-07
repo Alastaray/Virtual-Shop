@@ -7,13 +7,14 @@ class ProductsManagement
 {
 public:
 	ProductsManagement() = default;
-	~ProductsManagement() { products.clear(); }
+	~ProductsManagement() { DeleteVector(products); }
 	void AddProduct();
-	void ChangeStatusStock(unsigned id) { Display::DrawProducts(products, true); _getch(); }
+	void ChangeStatusStock(unsigned id) { Display::DrawProduct(products, true); _getch(); }
 	void BuyProduct(User* user);
 	int ChangeProductAmount(int index);
+	bool AreProductsStock();
 protected:
 	std::vector<Product*> products;
-
+	bool IsProduct(const char* name);
 };
 

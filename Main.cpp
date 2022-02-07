@@ -30,16 +30,16 @@ void main()
 						switch (_case)
 						{
 						case 0:
-							users_management.ShowUsers();
+							Display::DrawUser(users_management.GetUsers());
 							break;
 						case 1:
-							users_management.ShowUsers(true);
+							Display::DrawUser(users_management.GetUsers(), true);
 							break;
 						case 2:
-							users_management.ShowUsers(0, true);
+							Display::DrawUser(users_management.GetUsers(), false, true);
 							break;
 						case 3:
-							users_management.ShowUserSpentMost();
+							Display::DrawUser(users_management.GetUserSpentMost());
 							break;
 						case 4:
 							products_management.AddProduct();

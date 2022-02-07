@@ -1,6 +1,31 @@
 #pragma once
 #include <iostream>
 
+namespace UserRanks
+{
+	enum UserRankNumbers
+	{
+		NoVip,
+		Vip,
+		Employee,
+		Manager,
+		Director
+	};
+
+	inline const char* GetNoVip() { return ""; }
+	inline const char* GetVip() { return "Vip"; }
+	inline const char* GetEmployee() { return "Employee"; }
+	inline const char* GetManager() { return "Manager"; }
+	inline const char* GetDirector() { return "Director"; }
+
+	const double employee_discount = 0.1;
+	const double manager_discount = 0.2;
+	const double director_discount = 0.3;
+
+	int RankToInt(const char* rank);
+	const char* IntToRank(int rank);
+	double RankToDiscont(const char* rank);
+}
 
 
 class User

@@ -2,14 +2,14 @@
 
 
 
-Product::Product(unsigned int id, const char* name, unsigned price, unsigned amount, double discount)
+Product::Product(unsigned int id, const char* name, unsigned price, unsigned amount, double vip_discount)
 {
 	this->id = id;
 	this->status_stock = true;
 	SetName(name);
 	SetAmount(amount);
 	SetPrice(price);
-	SetDiscount(discount);
+	SetVipDiscount(vip_discount);
 }
 Product::Product(const Product& product)
 {
@@ -18,7 +18,7 @@ Product::Product(const Product& product)
 	SetName(product.name);
 	SetAmount(product.amount);
 	SetPrice(product.price);
-	SetDiscount(product.discount);
+	SetVipDiscount(product.vip_discount);
 }
 Product::~Product()
 {
@@ -39,10 +39,10 @@ void Product::SetPrice(unsigned _price)
 {
 	if (_price)price = _price;
 }
-void Product::SetDiscount(double _discount)
+void Product::SetVipDiscount(double _vip_discount)
 {
-	if (_discount >= 1 || _discount <= 0)discount = 1;
-	else discount = _discount;
+	if (_vip_discount >= 1 || _vip_discount <= 0)vip_discount = 0;
+	else vip_discount = _vip_discount;
 }
 void Product::ChangeAmount(int _amount)
 {

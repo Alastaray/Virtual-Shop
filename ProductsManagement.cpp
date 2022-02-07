@@ -7,8 +7,13 @@ void ProductsManagement::AddProduct()
 	static int id = 1;
 	const int name_size = 20;
 	char* name = new char[name_size];
-	std::cout << "Enter the product's name:\n";
-	Display::GetStr(name_size, name);
+	while (true)
+	{
+		std::cout << "Enter the product's name:\n";
+		Display::GetStr(name_size, name);
+		if (!IsProduct(name))break;
+		else std::cout << "This product has already added!\n";
+	}	
 	std::cout << "Enter the product's price:\n";
 	int price = Display::GetNumber(6);
 	std::cout << "Enter the product's amount:\n";
@@ -22,40 +27,45 @@ void ProductsManagement::AddProduct()
 }
 void ProductsManagement::BuyProduct(User* user)
 {
-	if (user)
+	if (AreProductsStock())
 	{
-		int id,
-			amount;
-		double purchase_amount = 0,
-			   purchase;
-		std::vector<Product*> bought_products;			
-		while (true)
+		if (user)
 		{
-			Display::DrawProducts(products);
-			std::cout << "\nEnter an id for purchase product or 0 for return to menu:\n";
-			id = Display::GetNumber(products.size(), (products.size() > 9) ? '9' : products.size() + '0');
-			if (!id)break;
-			id--;
-			if (!products[id]->GetStatusStock())continue;
-			amount = ChangeProductAmount(id);
-			std::cout << "Product was successfully bought!\n";
-			purchase = amount * products[id]->GetPrice();
-			purchase_amount += purchase - (purchase * products[id]->GetDiscount());
-			bought_products.push_back(products[id]);
-			_getch();
-		}
-		Display::cls();
-		if (bought_products.size())
-		{
-			Display::DrawProducts(bought_products, true);
-			std::cout << "\t\t^^^^^^^^^^^^You bought^^^^^^^^^^^^^^\n";
-			std::cout << "\nPurchase amount is " << purchase_amount;
+			int id,
+				purchase,
+				amount;
+			double purchase_amount = 0,
+				discount = UserRanks::RankToDiscont(user->GetRank());
+			std::vector<Product*> bought_products;
+			while (true)
+			{
+				Display::DrawProduct(products);
+				std::cout << "\nEnter an id for purchase product or 0 for return to menu:\n";
+				id = Display::GetNumber(products.size(), (products.size() > 9) ? Display::Nine : products.size() + Display::Zero);
+				if (!id)break;
+				id--;
+
+				if (!products[id]->GetStatusStock())continue;
+				amount = ChangeProductAmount(id);
+
+				
+				if (discount == -1)discount = products[id]->GetVipDiscount();
+
+				purchase = amount * products[id]->GetPrice();
+				purchase_amount += purchase - (purchase * discount);
+
+				bought_products.push_back(new Product(*products[id]));
+				bought_products.back()->SetAmount(amount);
+				std::cout << "Product was successfully bought!\n";
+				_getch();
+			}
+			Display::DrawShoppingBasket(bought_products, purchase_amount);
 			user->SetPurchaseAmount(purchase_amount);
-			_getch();
-		}	
+			DeleteVector(bought_products);
+		}
+		else std::cout << "User doen't exist!\n";
 	}
-	else std::cout << "User doen't exist!\n";
-	
+	else std::cout << "Product is out of stock!\n";
 }
 int ProductsManagement::ChangeProductAmount(int index)
 {
@@ -69,4 +79,26 @@ int ProductsManagement::ChangeProductAmount(int index)
 	}
 	else products[index]->ChangeAmount(-amount);
 	return amount;
+}
+bool ProductsManagement::AreProductsStock()
+{
+	if (products.size())
+	{
+		for (size_t i = 0; i < products.size(); i++)
+		{
+			if (!products[i]->GetStatusStock())return false;
+		}
+		return true;
+	}
+	else
+		return false;
+}
+bool ProductsManagement::IsProduct(const char* name)
+{
+	for (size_t i = 0; i < products.size(); i++)
+	{
+		if (!strcmp(products[i]->GetName(), name))
+			return true;
+	}
+	return false;
 }

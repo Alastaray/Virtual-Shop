@@ -8,11 +8,6 @@ UsersManagement::UsersManagement()
 	nickname_size = 21;
 	password_size = 16;
 	current_user = 0;
-	user_ranks[NoVip] = "";
-	user_ranks[Vip] = "Vip";
-	user_ranks[Employee] = "Employee";
-	user_ranks[Manager] = "Manager";
-	user_ranks[Director] = "Director";
 }
 void UsersManagement::SignUp()
 {
@@ -45,13 +40,13 @@ void UsersManagement::SignUp()
 		std::cout <<
 			"\tEnter the your rank!\n" <<
 			"\tFor example:\n" <<
-			"\t2. " + user_ranks[Employee] + "\n" << 
-			"\t3. " + user_ranks[Manager] + "\n"<<
-			"\t4. " + user_ranks[Director] + "\n";
+			"\t2. " << UserRanks::GetEmployee() << "\n" <<
+			"\t3. " << UserRanks::GetManager() << "\n" <<
+			"\t4. " << UserRanks::GetDirector() << "\n";
 		rank = Display::GetNumber(1, '4', '2');
 	}
 	
-	users.push_back(new User(id, user_data.first, user_data.second, user_ranks[rank].c_str()));
+	users.push_back(new User(id, user_data.first, user_data.second, UserRanks::IntToRank(rank)));
 	id++;
 	std::cout << "Registration Success!\n";
 	delete[]user_data.first;
@@ -97,29 +92,7 @@ int UsersManagement::SignIn()
 	_getch();
 	return false;
 }
-void UsersManagement::ShowUsers(bool is_vip, bool have_purchase)
-{
-	Display::cls();
-	std::cout <<
-		"\n\tId\t" << "Nickname\t" << "Password\t"<<"Purchase Amount\t" << "Rank\n";
-	for (size_t i = 0; i < users.size(); i++)
-	{
-		if (is_vip)
-		{
-			if (!strcmp(users[i]->GetRank(), user_ranks[Vip].c_str()))
-				Display::DrawUser(users, i);
-		}
-		else if (have_purchase)
-		{
-			if (users[i]->GetPurchaseAmount())
-				Display::DrawUser(users, i);
-		}
-		else
-			Display::DrawUser(users, i);
-	}
-	_getch();
-}
-void UsersManagement::ShowUserSpentMost()
+User* UsersManagement::GetUserSpentMost()
 {
 	Display::cls();
 	if (users.size())
@@ -127,27 +100,28 @@ void UsersManagement::ShowUserSpentMost()
 		std::cout << "\n";
 		int max = 0,
 			index_max = 0;
+		bool is_user_spent_most = false;
 		for (size_t i = 0; i < users.size(); i++)
 		{
 			if (users[i]->GetPurchaseAmount() > 0)
 			{
 				max = users[i]->GetPurchaseAmount();
 				index_max = i;
+				is_user_spent_most = true;
 			}
 		}
-		Display::DrawUser(users, index_max);
+		if (is_user_spent_most)return users[index_max];
 	}
-	else std::cout<< "No one hasn't bought something yet!\n";
-	_getch();
+	return 0;
 }
 User* UsersManagement::GetCurrentUser()
 {
 	if (users.size())return users[current_user];
-	return 0;	
+	throw std::exception("No one hasn't registration yet!\n");
 }
 bool UsersManagement::IsCustomer(const char* rank)
 {
-	if (!strcmp(rank, user_ranks[NoVip].c_str()) || !strcmp(rank, user_ranks[Vip].c_str()))
+	if (!strcmp(rank, UserRanks::GetNoVip()) || !strcmp(rank, UserRanks::GetVip()))
 		return true;
 	return false;
 }

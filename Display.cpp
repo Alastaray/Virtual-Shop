@@ -5,7 +5,6 @@
 
 namespace Display
 {
-	void cls() { system("cls"); }
 	int DrawMainMenu()
 	{
 		cls();
@@ -28,38 +27,107 @@ namespace Display
 		Display::GetData(password_size, password);
 		return { nickname, password };
 	}
-	void DrawUser(std::vector<User*> users, unsigned index)
+	void DrawUser(User* user)
 	{
-		std::cout << "\t" <<
-			users[index]->GetId() << "\t" <<
-			users[index]->GetNickname() << "\t\t" <<
-			users[index]->GetPassword() << "\t\t" <<
-			users[index]->GetPurchaseAmount() << "\t\t" <<
-			users[index]->GetRank() << "\n";
-	}
-	void DrawProduct(std::vector<Product*> product, unsigned index)
-	{
-		std::cout << "\t" <<
-			product[index]->GetId() << "\t\t" <<
-			product[index]->GetName() << "\t\t" <<
-			product[index]->GetPrice() << "\t\t" <<
-			product[index]->GetAmount() << "\t\t"<<
-			product[index]->GetDiscount() * 100 << "%\t\t"<<
-			product[index]->GetStatusStock()<<"\n";
-	}
-	void DrawProducts(std::vector<Product*> products, bool all)
-	{
-		Display::cls();
-		std::cout <<
-			"\n\tId\t\t" << "Name\t\t" << "Price\t\t" << "Amount\t\t" << "Discount\t" << "Status stock\n";
-		for (size_t i = 0; i < products.size(); i++)
+		if (user)
 		{
-			if(all)DrawProduct(products, i);
-			else
+			std::cout << "\t" <<
+				user->GetId() << "\t" <<
+				user->GetNickname() << "\t\t" <<
+				user->GetPassword() << "\t\t" <<
+				user->GetPurchaseAmount() << "\t\t\t" <<
+				user->GetRank() << "\n";
+		}
+		else
+		{
+			std::cout << "User doesn't exist!";
+			_getch();
+		}
+	}
+	void DrawUser(std::vector<User*>& users, bool is_vip, bool have_purchase)
+	{
+		if (users.size())
+		{
+			cls();
+			int counter = 0;
+			std::cout <<
+				"\n\tId\t" << "Nickname\t" << "Password\t" << "Purchase Amount\t\t" << "Rank\n";
+			for (size_t i = 0; i < users.size(); i++)
 			{
-				if(products[i]->GetStatusStock())
-					DrawProduct(products, i);
+				if (is_vip)
+				{
+					if (!strcmp(users[i]->GetRank(), UserRanks::GetVip()))
+					{
+						DrawUser(users[i]);
+						counter++;
+					}
+				}
+				else if (have_purchase)
+				{
+					if (users[i]->GetPurchaseAmount())
+					{
+						DrawUser(users[i]);
+						counter++;
+					}
+				}
+				else
+				{
+					DrawUser(users[i]);
+					counter++;
+				}
 			}
+			if (!counter)
+			{
+				cls();
+				std::cout << "This users don't exist!\n";
+			}
+				_getch();
+		}		
+	}
+	void DrawProduct(Product* product)
+	{
+		if (product)
+		{
+			std::cout << "\t" <<
+				product->GetId() << "\t\t" <<
+				product->GetName() << "\t\t" <<
+				product->GetPrice() << "\t\t" <<
+				product->GetAmount() << "\t\t" <<
+				product->GetVipDiscount() * 100 << "%\t\t" <<
+				product->GetStatusStock() << "\n";
+		}	
+		else
+		{
+			std::cout << "Product doesn't exist!";
+			_getch();
+		}
+	}
+	void DrawProduct(std::vector<Product*>& products, bool all)
+	{
+		if (products.size())
+		{
+			Display::cls();
+			std::cout <<
+				"\n\tId\t\t" << "Name\t\t" << "Price\t\t" << "Amount\t\t" << "Vip Discount\t" << "Status stock\n";
+			for (size_t i = 0; i < products.size(); i++)
+			{
+				if (all)DrawProduct(products[i]);
+				else
+				{
+					if (products[i]->GetStatusStock())
+						DrawProduct(products[i]);
+				}
+			}
+		}	
+	}
+	void DrawShoppingBasket(std::vector<Product*>& bought_products, double purchase_amount)
+	{
+		if (bought_products.size())
+		{
+			Display::DrawProduct(bought_products, true);
+			std::cout << "\t\t^^^^^^^^^^^^You bought^^^^^^^^^^^^^^\n";
+			std::cout << "\nPurchase amount is " << purchase_amount;
+			_getch();
 		}
 	}
 	int DrawEmployeeMenu()
@@ -69,8 +137,8 @@ namespace Display
 		std::cout <<
 			"\n\t0. Show all users\n" <<
 			"\t1. Show all customers, which are vip\n" <<
-			"\t2. Show all customers, which have even bought one thing\n" <<
-			"\t3. Show customer, which have purchase amount is the highest\n" <<
+			"\t2. Show all users, which have even bought one thing\n" <<
+			"\t3. Show user, which have purchase amount is the highest\n" <<
 			"\t4. Add new product\n" <<
 			"\t5. Change inventory status\n" <<
 			"\t6. Buy something\n" <<

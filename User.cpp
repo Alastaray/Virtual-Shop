@@ -2,7 +2,36 @@
 
 
 
-
+namespace UserRanks
+{
+	int RankToInt(const char* rank)
+	{
+		if (!strcmp(rank, GetEmployee()))return Employee;
+		if (!strcmp(rank, GetManager()))return Manager;
+		if (!strcmp(rank, GetDirector()))return Director;
+		if (!strcmp(rank, GetVip()))return Vip;
+		return NoVip;
+	}
+	const char* IntToRank(int rank)
+	{
+		switch (rank)
+		{
+		case Vip: return GetVip();
+		case Employee:	return GetEmployee();
+		case Manager: return GetManager();
+		case Director:	return GetDirector();
+		}
+		return GetNoVip();
+	}
+	double RankToDiscont(const char* rank)
+	{
+		if (!strcmp(rank, GetEmployee()))return employee_discount;
+		if (!strcmp(rank, GetManager()))return manager_discount;
+		if (!strcmp(rank, GetDirector()))return director_discount;
+		if (!strcmp(rank, GetVip()))return -1;
+		return 0;
+	}
+}
 
 User::User(unsigned int id, const char* nickname, const char* password, const char* rank)
 {
