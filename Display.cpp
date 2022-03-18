@@ -10,10 +10,56 @@ namespace Display
 		cls();
 		int size = 1;
 		std::cout <<
-			"\n\t0. Sing up\n" <<
-			"\t1. Sing in\n" <<
-			"\t2. Exit\n";
-		return GetNumber(size, '2');
+			"\n\t1. Sing up\n" <<
+			"\t2. Sing in\n" <<
+			"\t3. Exit\n";
+		return GetNumber(size, '3', '1');
+	}
+	int DrawSubMenu()
+	{
+		cls();
+		int size = 1;
+		std::cout <<
+			"\n\t1. Add new real estate\n" <<
+			"\t2. Remove real estate\n" <<
+			"\t3. Show all real estate\n" <<
+			"\t4. Show user real estate\n" <<
+			"\t5. Find real estate\n" <<
+			"\t6. Back\n";
+		return GetNumber(size, '6', '1');
+	}
+	void DrawRealEstate(RealEstate* real_estate)
+	{
+		std::cout << "Rent " << real_estate->GetName() << ": " << real_estate->GetAmountRooms() << " rooms";
+		real_estate->GetFloor() ? std::cout << "floor is " << real_estate->GetFloor() << "\n" : std::cout << "\n";
+		std::cout << "Price is " << real_estate->GetPrice() << "$\n";
+		std::cout << "Address: city is " << real_estate->GetAddress()->GetCity() << ", "
+			<< "street is " << real_estate->GetAddress()->GetStreet() << "\n";
+	}
+	void DrawPublications(std::vector<User*>& users)
+	{
+		if (users.size())
+		{
+			for (auto user : users)
+			{
+				DrawPublications(user);
+			}
+			getch();
+		}
+		else throw std::exception("Users are not exist!");
+	}
+	void DrawPublications(User* user)
+	{
+		if (user->GetPublications().size())
+		{
+			for (size_t i = 0; i < user->GetPublications().size(); i++)
+			{
+				DrawRealEstate(user->GetPublications()[i]);
+				std::cout << "Contact information: " << user->GetNickname() << " " << user->GetPhone() << " (" << user->GetRank() << ")\n";
+			}
+			getch();
+		}
+		else throw std::exception("User has not publications!");
 	}
 	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size)
 	{
@@ -27,21 +73,6 @@ namespace Display
 		Display::GetData(password_size, password);
 		return { nickname, password };
 	}	
-	int DrawEmployeeMenu()
-	{
-		cls();
-		int size = 1;
-		std::cout <<
-			"\n\t0. Show all users\n" <<
-			"\t1. Show all customers, which are vip\n" <<
-			"\t2. Show all users, which have even bought one thing\n" <<
-			"\t3. Show user, which have purchase amount is the highest\n" <<
-			"\t4. Add new product\n" <<
-			"\t5. Change inventory status\n" <<
-			"\t6. Buy something\n" <<
-			"\t7. Back\n";
-		return GetNumber(size, '7');
-	}
 	std::set<std::string> DrawCities(std::vector<Address*>& addresses)
 	{
 		std::set<std::string> cities;

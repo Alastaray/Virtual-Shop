@@ -3,58 +3,55 @@
 
 void main()
 {
-	std::cout.setf(std::ios::boolalpha);
 	UsersManagement users_management;
-	RealEstatesManagement products_management;
-	products_management.AddRealEstate();
-	/*while (true)
+	RealEstatesManagement realestate_management;
+	while (true)
 	{
 		try
 		{
 			switch (Display::DrawMainMenu())
 			{
-			case 0:
+			case 1:
 				users_management.SignUp();
 				break;
-			case 1:				
-				switch (users_management.SignIn())
+			case 2:				
+				if (users_management.SignIn())
 				{
-				case 1:
-					products_management.BuyProduct(users_management.GetCurrentUser());
-					break;
-				case 2:
-					int _case = -1;
-					while (_case != 7)
+					int submenu = 1;
+					while (submenu != 6)
 					{
-						_case = Display::DrawEmployeeMenu();
-						switch (_case)
+						try
 						{
-						case 0:
-							Display::DrawUser(users_management.GetUsers());
-							break;
-						case 1:
-							Display::DrawUser(users_management.GetUsers(), true);
-							break;
-						case 2:
-							Display::DrawUser(users_management.GetUsers(), false, true);
-							break;
-						case 3:
-							Display::DrawUser(users_management.GetUserSpentMost());
-							break;
-						case 4:
-							products_management.AddProduct();
-							break;
-						case 5:
-							products_management.ChangeProductStatus();
-							break;
-						case 6:
-							products_management.BuyProduct(users_management.GetCurrentUser());
-							break;
+							submenu = Display::DrawSubMenu();
+							switch (submenu)
+							{
+							case 1:
+							{
+								RealEstate* real_estate = realestate_management.AddRealEstate();
+								users_management.GetCurrentUser()->AddPublication(real_estate);
+							}								
+								break;
+							case 2:
+								break;
+							case 3:
+								Display::DrawPublications(users_management.GetUsers());
+								break;
+							case 4:
+								Display::DrawPublications(users_management.GetCurrentUser());
+							case 5:
+								break;
+							}
+						}
+						catch (const std::exception& er)
+						{
+							Display::cls();
+							std::cout << er.what();
+							_getch();
 						}
 					}					
 				}
 				break;
-			case 2:
+			case 3:
 				return;
 			}
 		}
@@ -64,5 +61,5 @@ void main()
 			std::cout << er.what();
 			_getch();
 		}	
-	}	*/
+	}	
 }

@@ -12,7 +12,7 @@ public:
 	UsersManagement();
 	~UsersManagement() { DeleteVector(users); }
 	void SignUp();
-	int SignIn();
+	bool SignIn();
 	std::vector<User*>& GetUsers() { return users; }
 	User* GetCurrentUser() { return users[current_user]; }
 protected:

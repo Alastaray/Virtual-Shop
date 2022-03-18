@@ -7,7 +7,7 @@ RealEstatesManagement::RealEstatesManagement()
 }
 RealEstatesManagement::~RealEstatesManagement()
 {
-	DeleteVector(realestates);
+	DeleteVector(real_estates);
 	DeleteVector(addresses);
 }
 void RealEstatesManagement::SetAddresses()
@@ -31,24 +31,20 @@ void RealEstatesManagement::SetAddresses()
 	file.close();
 	delete[]buff;
 }
-void RealEstatesManagement::AddRealEstate()
+RealEstate* RealEstatesManagement::AddRealEstate()
 {
 	const int str_size = 30;
 	static int id = 1;
 
-	char* city = new char[str_size];
-	std::string user_city = Display::CheckUserInputInSet(Display::DrawCities(addresses), str_size);
-	strcpy_s(city, str_size, user_city.c_str());
+	std::string city = Display::CheckUserInputInSet(Display::DrawCities(addresses), str_size);
 
-	char* street = new char[str_size];
-	std::string user_street = Display::CheckUserInputInSet(Display::DrawStreets(addresses, city), str_size);
-	strcpy_s(street, str_size, user_street.c_str());
+	std::string street = Display::CheckUserInputInSet(Display::DrawStreets(addresses, city.c_str()), str_size);
 
 	std::cout << "Enter the type of real estate (flat, private house):\n";
 	char* name = new char[str_size];
 	Display::GetStr(str_size, name);
 
-	std::cout << "Enter the real estate price:\n";
+	std::cout << "Enter the price:\n";
 	int price = Display::GetNumber(6);
 
 	std::cout << "Enter the amount rooms:\n";
@@ -57,10 +53,10 @@ void RealEstatesManagement::AddRealEstate()
 	std::cout << "Enter a floor, if you live in private house, enter the '0':\n";
 	int	floor = Display::GetNumber(3);
 
-	Address* address = new Address(city, street);
-	realestates.push_back(new RealEstate(id, address, name, price, amount_rooms, floor));
+	Address address(city.c_str(), street.c_str());
+	real_estates.push_back(new RealEstate(id, &address, name, price, amount_rooms, floor));
 	id++;
-	delete[]city;
-	delete[]street;
-	delete address;
+	std::cout << "Real estate successfully added!\n";
+	_getch();
+	return real_estates.back();
 }

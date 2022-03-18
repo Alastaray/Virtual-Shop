@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Address.h"
+
 class RealEstate
 {
 public:
@@ -26,6 +27,5 @@ protected:
 		amount_rooms,
 		floor;
 	Address* address;
-
 };
 

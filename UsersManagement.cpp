@@ -33,7 +33,7 @@ void UsersManagement::SignUp()
 	phone = Display::GetNumber(10);
 	if (is_customer)
 	{
-		int size = strlen(user);
+		int size = strlen(user)+1;
 		rank = new char[size + 1];
 		strcpy_s(rank, size, user);
 	}
@@ -53,7 +53,7 @@ void UsersManagement::SignUp()
 	delete[]rank;
 	_getch();
 }
-int UsersManagement::SignIn()
+bool UsersManagement::SignIn()
 {
 	Display::cls();
 	if (users.size())
@@ -81,7 +81,7 @@ int UsersManagement::SignIn()
 			std::cout << "Nickname or password is wrong!\n";				
 	}
 	else
-		std::cout << "No one hasn't registration yet!\n";
+		std::cout << "No one hasn't registration yet!\n";	
 	_getch();
 	return false;
 }
