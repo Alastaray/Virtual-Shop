@@ -13,12 +13,15 @@ void UsersManagement::SignUp()
 {
 	Display::cls();
 	static int id = 1;
-	int rank;
+	int phone;
+	char* rank;
 	bool is_customer;
+	const char broker[] = "broker";
+	const char user[] = "user";
 	std::pair<const char*, const char*> user_data;
 	std::cout << 
-		"\n\t0. As employee\n" <<
-		"\t1. As customer\n";
+		"\n\t0. I am "<< broker <<"\n" <<
+		"\t1. I am " << user << "\n";
 	is_customer = Display::GetNumber(1);
 	while (true)
 	{
@@ -26,31 +29,26 @@ void UsersManagement::SignUp()
 		if (!IsUser(user_data.first))break;
 		else std::cout << "This nickname is taken!\n";
 	}
-	
+	std::cout << "Enter your phone\n";
+	phone = Display::GetNumber(10);
 	if (is_customer)
 	{
-		std::cout <<
-			"\tAre you VIP?\n" <<
-			"\t0. No\n" <<
-			"\t1. Yes\n";
-		rank = Display::GetNumber(1,'1');
+		rank = new char[strlen(user) + 1];
+		strcpy(rank, user);
 	}
 	else
 	{
-		std::cout <<
-			"\tEnter the your rank!\n" <<
-			"\tFor example:\n" <<
-			"\t2. " << UserRanks::GetEmployee() << "\n" <<
-			"\t3. " << UserRanks::GetManager() << "\n" <<
-			"\t4. " << UserRanks::GetDirector() << "\n";
-		rank = Display::GetNumber(1, '4', '2');
+		rank = new char[strlen(broker) + 1];
+		strcpy(rank, broker);
 	}
+
 	
-	users.push_back(new User(id, user_data.first, user_data.second, UserRanks::IntToRank(rank)));
+	users.push_back(new User(id, user_data.first, user_data.second, rank, phone));
 	id++;
 	std::cout << "Registration Success!\n";
 	delete[]user_data.first;
 	delete[]user_data.second;
+	delete[]rank;
 	_getch();
 }
 int UsersManagement::SignIn()
@@ -74,11 +72,8 @@ int UsersManagement::SignIn()
 		delete[]user_data.second;
 		if (registered)
 		{
-			std::cout << "Hello, " << users[i]->GetNickname()<<" ("<< users[i]->GetRank() <<")";
 			current_user = i;
-			_getch();
-			if (IsCustomer(users[i]->GetRank()))return 1;
-			else return 2;		
+			return true;
 		}
 		else
 			std::cout << "Nickname or password is wrong!\n";				
@@ -86,39 +81,6 @@ int UsersManagement::SignIn()
 	else
 		std::cout << "No one hasn't registration yet!\n";
 	_getch();
-	return false;
-}
-User* UsersManagement::GetUserSpentMost()
-{
-	Display::cls();
-	if (users.size())
-	{
-		std::cout << "\n";
-		int max = 0,
-			index_max = 0;
-		bool is_user_spent_most = false;
-		for (size_t i = 0; i < users.size(); i++)
-		{
-			if (users[i]->GetPurchaseAmount() > 0)
-			{
-				max = users[i]->GetPurchaseAmount();
-				index_max = i;
-				is_user_spent_most = true;
-			}
-		}
-		if (is_user_spent_most)return users[index_max];
-	}
-	return 0;
-}
-User* UsersManagement::GetCurrentUser()
-{
-	if (users.size())return users[current_user];
-	throw std::exception("No one hasn't registration yet!\n");
-}
-bool UsersManagement::IsCustomer(const char* rank)
-{
-	if (!strcmp(rank, UserRanks::GetNoVip()) || !strcmp(rank, UserRanks::GetVip()))
-		return true;
 	return false;
 }
 bool UsersManagement::IsUser(const char* nickname)

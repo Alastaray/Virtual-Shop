@@ -13,15 +13,13 @@ public:
 	~UsersManagement() { DeleteVector(users); }
 	void SignUp();
 	int SignIn();
-	User* GetUserSpentMost();
 	std::vector<User*>& GetUsers() { return users; }
-	User* GetCurrentUser();
+	User* GetCurrentUser() { return users[current_user]; }
 protected:
 	std::vector<User*> users;
 	int nickname_size,
 		password_size,
 		current_user;
-	bool IsCustomer(const char* rank);
 	bool IsUser(const char* nickname);
 	
 };

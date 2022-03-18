@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <vector>
 #include "User.h"
-#include "Product.h"
+#include "RealEstate.h"
 
 
 template <class type>
@@ -32,9 +32,9 @@ namespace Display
 	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size);
 	void DrawUser(User* user);
 	void DrawUser(std::vector<User*>& users, bool is_vip = false, bool have_purchase = false);
-	void DrawProduct(Product* product);
-	void DrawProduct(std::vector<Product*>& products, bool all = false);
-	void DrawShoppingBasket(std::vector<Product*>& bought_products, double purchase_amount);
+	void DrawProduct(RealEstate* product);
+	void DrawProduct(std::vector<RealEstate*>& products, bool all = false);
+	void DrawShoppingBasket(std::vector<RealEstate*>& bought_products, double purchase_amount);
 	int GetNumber(unsigned amount_symbols, char to_number = Nine, char from_number = Zero);
 	void GetStr(unsigned amount_symbols, char* destination);
 	void GetData(unsigned amount_symbols, char* destination);

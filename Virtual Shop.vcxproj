@@ -139,17 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Address.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Product.cpp" />
-    <ClCompile Include="ProductsManagement.cpp" />
+    <ClCompile Include="RealEstate.cpp" />
+    <ClCompile Include="RealEstatesManagement.cpp" />
     <ClCompile Include="UsersManagement.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Address.h" />
     <ClInclude Include="Display.h" />
-    <ClInclude Include="Product.h" />
-    <ClInclude Include="ProductsManagement.h" />
+    <ClInclude Include="RealEstate.h" />
+    <ClInclude Include="RealEstatesManagement.h" />
     <ClInclude Include="UsersManagement.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

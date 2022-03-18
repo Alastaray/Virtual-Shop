@@ -84,7 +84,7 @@ namespace Display
 				_getch();
 		}		
 	}
-	void DrawProduct(Product* product)
+	void DrawProduct(RealEstate* product)
 	{
 		if (product)
 		{
@@ -92,17 +92,17 @@ namespace Display
 				product->GetId() << "\t\t" <<
 				product->GetName() << "\t\t" <<
 				product->GetPrice() << "\t\t" <<
-				product->GetAmount() << "\t\t" <<
+				product->GetAmountRooms() << "\t\t" <<
 				product->GetVipDiscount() * 100 << "%\t\t" <<
 				product->GetStatusStock() << "\n";
 		}	
 		else
 		{
-			std::cout << "Product was not added!";
+			std::cout << "RealEstate was not added!";
 			_getch();
 		}
 	}
-	void DrawProduct(std::vector<Product*>& products, bool all)
+	void DrawProduct(std::vector<RealEstate*>& products, bool all)
 	{
 		if (products.size())
 		{
@@ -125,17 +125,7 @@ namespace Display
 			std::cout << "Products were not added!";
 			_getch();
 		}
-	}
-	void DrawShoppingBasket(std::vector<Product*>& bought_products, double purchase_amount)
-	{
-		if (bought_products.size())
-		{
-			Display::DrawProduct(bought_products, true);
-			std::cout << "\t\t^^^^^^^^^^^^You bought^^^^^^^^^^^^^^\n";
-			std::cout << "\nPurchase amount is " << purchase_amount;
-			_getch();
-		}
-	}
+	}	
 	int DrawEmployeeMenu()
 	{
 		cls();

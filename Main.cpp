@@ -5,7 +5,7 @@ void main()
 {
 	std::cout.setf(std::ios::boolalpha);
 	UsersManagement users_management;
-	ProductsManagement products_management;
+	RealEstatesManagement products_management;
 	while (true)
 	{
 		try
