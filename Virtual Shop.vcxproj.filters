@@ -21,10 +21,16 @@
     <ClCompile Include="User.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="UserManagement.cpp">
+    <ClCompile Include="UsersManagement.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Product.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductsManagement.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +38,16 @@
     <ClInclude Include="User.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UserManagement.h">
+    <ClInclude Include="UsersManagement.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Product.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductsManagement.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

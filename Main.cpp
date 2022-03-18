@@ -1,30 +1,67 @@
-#include "UserManagement.h"
-#include "Display.h"
+#include "UsersManagement.h"
+#include "ProductsManagement.h"
 
 void main()
 {
-	UserManagement management;
+	std::cout.setf(std::ios::boolalpha);
+	UsersManagement users_management;
+	ProductsManagement products_management;
 	while (true)
 	{
-		switch (Display::DrawMainMenu())
+		try
 		{
-		case 0:
-			management.SingUp();
-			break;
-		case 1:
-			switch (management.SingIn())
+			switch (Display::DrawMainMenu())
 			{
-			case 1:
+			case 0:
+				users_management.SignUp();
+				break;
+			case 1:				
+				switch (users_management.SignIn())
+				{
+				case 1:
+					products_management.BuyProduct(users_management.GetCurrentUser());
+					break;
+				case 2:
+					int _case = -1;
+					while (_case != 7)
+					{
+						_case = Display::DrawEmployeeMenu();
+						switch (_case)
+						{
+						case 0:
+							Display::DrawUser(users_management.GetUsers());
+							break;
+						case 1:
+							Display::DrawUser(users_management.GetUsers(), true);
+							break;
+						case 2:
+							Display::DrawUser(users_management.GetUsers(), false, true);
+							break;
+						case 3:
+							Display::DrawUser(users_management.GetUserSpentMost());
+							break;
+						case 4:
+							products_management.AddProduct();
+							break;
+						case 5:
+							products_management.ChangeProductStatus();
+							break;
+						case 6:
+							products_management.BuyProduct(users_management.GetCurrentUser());
+							break;
+						}
+					}					
+				}
 				break;
 			case 2:
-				break;
+				return;
 			}
-			break;
-		case 2:
-			return;
-			break;
 		}
-	}
-	
-	
+		catch (const std::exception& er)
+		{
+			Display::cls();
+			std::cout << er.what();
+			_getch();
+		}	
+	}	
 }
