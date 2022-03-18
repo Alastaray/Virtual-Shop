@@ -33,13 +33,15 @@ void UsersManagement::SignUp()
 	phone = Display::GetNumber(10);
 	if (is_customer)
 	{
-		rank = new char[strlen(user) + 1];
-		strcpy(rank, user);
+		int size = strlen(user);
+		rank = new char[size + 1];
+		strcpy_s(rank, size, user);
 	}
 	else
 	{
-		rank = new char[strlen(broker) + 1];
-		strcpy(rank, broker);
+		int size = strlen(broker);
+		rank = new char[size + 1];
+		strcpy_s(rank, size, broker);
 	}
 
 	

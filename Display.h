@@ -2,15 +2,16 @@
 #include <iostream>
 #include <conio.h>
 #include <vector>
+#include <set>
 #include "User.h"
 #include "RealEstate.h"
 
 
 template <class type>
-void DeleteVector(std::vector<type>& vec)
+void DeleteVector(std::vector<type *>& vec)
 {
-	for (auto i = vec.begin(); i < vec.end(); i++)
-		delete* i;
+	for (auto i : vec)
+		delete i;
 	vec.clear();
 	vec.shrink_to_fit();
 }
@@ -30,11 +31,9 @@ namespace Display
 	int DrawMainMenu();
 	int DrawEmployeeMenu();
 	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size);
-	void DrawUser(User* user);
-	void DrawUser(std::vector<User*>& users, bool is_vip = false, bool have_purchase = false);
-	void DrawProduct(RealEstate* product);
-	void DrawProduct(std::vector<RealEstate*>& products, bool all = false);
-	void DrawShoppingBasket(std::vector<RealEstate*>& bought_products, double purchase_amount);
+	std::set<std::string> DrawCities(std::vector<Address*>& addresses);
+	std::set<std::string> DrawStreets(std::vector<Address*>& addresses, const char* city);
+	std::string CheckUserInputInSet(std::set<std::string> set, int size_str);
 	int GetNumber(unsigned amount_symbols, char to_number = Nine, char from_number = Zero);
 	void GetStr(unsigned amount_symbols, char* destination);
 	void GetData(unsigned amount_symbols, char* destination);

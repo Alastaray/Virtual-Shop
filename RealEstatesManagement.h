@@ -1,19 +1,17 @@
 #pragma once
-#include <vector>
+#include <fstream>
 #include "RealEstate.h"
-#include "Address.h"
 #include "Display.h"
+#pragma warning(disable: 4996)
+
 
 class RealEstatesManagement
 {
 public:
-	RealEstatesManagement() = default;
-	~RealEstatesManagement() 
-	{ 
-		DeleteVector(realestates);
-		DeleteVector(addresses);
-	}
-	
+	RealEstatesManagement();
+	~RealEstatesManagement();
+	void SetAddresses();
+	void AddRealEstate();
 protected:
 	std::vector<RealEstate*> realestates;
 	std::vector<Address*> addresses;

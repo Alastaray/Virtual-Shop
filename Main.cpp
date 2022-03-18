@@ -1,12 +1,13 @@
 #include "UsersManagement.h"
-#include "ProductsManagement.h"
+#include "RealEstatesManagement.h"
 
 void main()
 {
 	std::cout.setf(std::ios::boolalpha);
 	UsersManagement users_management;
 	RealEstatesManagement products_management;
-	while (true)
+	products_management.AddRealEstate();
+	/*while (true)
 	{
 		try
 		{
@@ -63,5 +64,5 @@ void main()
 			std::cout << er.what();
 			_getch();
 		}	
-	}	
+	}	*/
 }

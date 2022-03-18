@@ -2,21 +2,14 @@
 
 
 
-RealEstate::RealEstate(unsigned int id, const char* name, unsigned price, unsigned amount_rooms, unsigned floor)
+RealEstate::RealEstate(unsigned int id, Address* address, const char* name, unsigned price, unsigned amount_rooms, unsigned floor)
 {
 	this->id = id;
 	SetName(name);
 	SetAmountRooms(amount_rooms);
 	SetPrice(price);
 	SetFloor(floor);
-}
-RealEstate::RealEstate(unsigned int id, const char* name, unsigned price, unsigned amount_rooms)
-{
-	this->id = id;
-	SetName(name);
-	SetAmountRooms(amount_rooms);
-	SetPrice(price);
-	SetFloor(0);
+	SetAddress(address->GetCity(), address->GetStreet());
 }
 RealEstate::RealEstate(const RealEstate& realestate)
 {
@@ -28,6 +21,7 @@ RealEstate::RealEstate(const RealEstate& realestate)
 RealEstate::~RealEstate()
 {
 	delete[]name;
+	delete address;
 }
 void RealEstate::SetName(const char* _name)
 {
@@ -47,4 +41,9 @@ void RealEstate::SetPrice(unsigned _price)
 void RealEstate::SetFloor(unsigned _floor)
 {
 	floor = _floor;
+}
+void RealEstate::SetAddress(const char* city, const char* street)
+{
+	if (address)delete address;
+	address = new Address(city, street);
 }

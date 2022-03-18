@@ -26,105 +26,6 @@ namespace Display
 		std::cout << "Enter the your password!\n";
 		Display::GetData(password_size, password);
 		return { nickname, password };
-	}
-	void DrawUser(User* user)
-	{
-		if (user)
-		{
-			std::cout << "\t" <<
-				user->GetId() << "\t" <<
-				user->GetNickname() << "\t\t" <<
-				user->GetPassword() << "\t\t" <<
-				user->GetPurchaseAmount() << "\t\t\t" <<
-				user->GetRank() << "\n";
-		}
-		else
-		{
-			std::cout << "User doesn't exist!";
-			_getch();
-		}
-	}
-	void DrawUser(std::vector<User*>& users, bool is_vip, bool have_purchase)
-	{
-		if (users.size())
-		{
-			cls();
-			int counter = 0;
-			std::cout <<
-				"\n\tId\t" << "Nickname\t" << "Password\t" << "Purchase Amount\t\t" << "Rank\n";
-			for (size_t i = 0; i < users.size(); i++)
-			{
-				if (is_vip)
-				{
-					if (!strcmp(users[i]->GetRank(), UserRanks::GetVip()))
-					{
-						DrawUser(users[i]);
-						counter++;
-					}
-				}
-				else if (have_purchase)
-				{
-					if (users[i]->GetPurchaseAmount())
-					{
-						DrawUser(users[i]);
-						counter++;
-					}
-				}
-				else
-				{
-					DrawUser(users[i]);
-					counter++;
-				}
-			}
-			if (!counter)
-			{
-				cls();
-				std::cout << "This users don't exist!\n";
-			}
-				_getch();
-		}		
-	}
-	void DrawProduct(RealEstate* product)
-	{
-		if (product)
-		{
-			std::cout << "\t" <<
-				product->GetId() << "\t\t" <<
-				product->GetName() << "\t\t" <<
-				product->GetPrice() << "\t\t" <<
-				product->GetAmountRooms() << "\t\t" <<
-				product->GetVipDiscount() * 100 << "%\t\t" <<
-				product->GetStatusStock() << "\n";
-		}	
-		else
-		{
-			std::cout << "RealEstate was not added!";
-			_getch();
-		}
-	}
-	void DrawProduct(std::vector<RealEstate*>& products, bool all)
-	{
-		if (products.size())
-		{
-			Display::cls();
-			std::cout <<
-				"\n\tId\t\t" << "Name\t\t" << "Price\t\t" << "Amount\t\t" << "Vip Discount\t" << "Status stock\n";
-			for (size_t i = 0; i < products.size(); i++)
-			{
-				if (all)DrawProduct(products[i]);
-				else
-				{
-					if (products[i]->GetStatusStock())
-						DrawProduct(products[i]);
-				}
-			}
-		}
-		else
-		{
-			cls();
-			std::cout << "Products were not added!";
-			_getch();
-		}
 	}	
 	int DrawEmployeeMenu()
 	{
@@ -140,6 +41,54 @@ namespace Display
 			"\t6. Buy something\n" <<
 			"\t7. Back\n";
 		return GetNumber(size, '7');
+	}
+	std::set<std::string> DrawCities(std::vector<Address*>& addresses)
+	{
+		std::set<std::string> cities;
+		for (auto address : addresses)
+		{
+			cities.insert(address->GetCity());
+		}
+		for (auto city : cities)
+		{
+			std::cout << city << "\n";
+		}
+		return cities;
+	}
+	std::set<std::string> DrawStreets(std::vector<Address*>& addresses, const char* city)
+	{
+		std::set<std::string> streets;
+		for (auto address : addresses)
+		{
+			if (!strcmp(address->GetCity(), city))
+				streets.insert(address->GetStreet());
+		}
+		for (auto street : streets)
+		{
+			std::cout << street << "\n";
+		}
+		return streets;
+	}
+	std::string CheckUserInputInSet(std::set<std::string> set, int size_str)
+	{	
+		char* input = new char[size_str];
+		bool flag = false;
+		while (!flag)
+		{
+			GetStr(size_str, input);
+			for (auto i : set)
+			{
+				if (!i.compare(input))
+				{
+					flag = true;
+					break;
+				}					
+			}
+			if(!flag)std::cout << "Incorrect input!\n";
+		}
+		std::string buff = input;
+		delete[] input;
+		return buff;
 	}
 	int GetNumber(unsigned amount_symbols, char to_number, char from_number)
 	{
