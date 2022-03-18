@@ -11,9 +11,9 @@ public:
 	RealEstatesManagement();
 	~RealEstatesManagement();
 	void SetAddresses();
-	RealEstate* AddRealEstate();
+	RealEstate* CreateRealEstate();
+	Address* GetLocation(int str_size);
 protected:
-	std::vector<RealEstate*> real_estates;
 	std::vector<Address*> addresses;
 };
 

@@ -31,7 +31,7 @@ namespace Display
 	void DrawRealEstate(RealEstate* real_estate)
 	{
 		std::cout << "Rent " << real_estate->GetName() << ": " << real_estate->GetAmountRooms() << " rooms";
-		real_estate->GetFloor() ? std::cout << "floor is " << real_estate->GetFloor() << "\n" : std::cout << "\n";
+		real_estate->GetFloor() ? std::cout << ", floor is " << real_estate->GetFloor() << "\n" : std::cout << "\n";
 		std::cout << "Price is " << real_estate->GetPrice() << "$\n";
 		std::cout << "Address: city is " << real_estate->GetAddress()->GetCity() << ", "
 			<< "street is " << real_estate->GetAddress()->GetStreet() << "\n";
@@ -42,9 +42,9 @@ namespace Display
 		{
 			for (auto user : users)
 			{
-				DrawPublications(user);
+				if (user->GetPublications().size())
+					DrawPublications(user);
 			}
-			getch();
 		}
 		else throw std::exception("Users are not exist!");
 	}
@@ -55,11 +55,15 @@ namespace Display
 			for (size_t i = 0; i < user->GetPublications().size(); i++)
 			{
 				DrawRealEstate(user->GetPublications()[i]);
-				std::cout << "Contact information: " << user->GetNickname() << " " << user->GetPhone() << " (" << user->GetRank() << ")\n";
+				DrawUserInfo(user);
+				std::cout << "\n";
 			}
-			getch();
 		}
 		else throw std::exception("User has not publications!");
+	}
+	void DrawUserInfo(User* user)
+	{
+		std::cout << "Contact information: " << user->GetNickname() << " (" << user->GetRank() << ")\n";
 	}
 	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size)
 	{

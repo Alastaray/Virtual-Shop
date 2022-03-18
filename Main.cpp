@@ -3,8 +3,8 @@
 
 void main()
 {
-	UsersManagement users_management;
 	RealEstatesManagement realestate_management;
+	UsersManagement users_management;	
 	while (true)
 	{
 		try
@@ -26,19 +26,21 @@ void main()
 							switch (submenu)
 							{
 							case 1:
-							{
-								RealEstate* real_estate = realestate_management.AddRealEstate();
-								users_management.GetCurrentUser()->AddPublication(real_estate);
-							}								
+								users_management.AddNewPublication();
 								break;
 							case 2:
+								users_management.RemovePublication();
 								break;
 							case 3:
 								Display::DrawPublications(users_management.GetUsers());
+								_getch();
 								break;
 							case 4:
 								Display::DrawPublications(users_management.GetCurrentUser());
+								_getch();
+								break;
 							case 5:
+								users_management.FindPublication();
 								break;
 							}
 						}

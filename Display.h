@@ -33,6 +33,7 @@ namespace Display
 	void DrawRealEstate(RealEstate* real_estate);
 	void DrawPublications(std::vector<User*>& users);
 	void DrawPublications(User* user);
+	void DrawUserInfo(User* user);
 	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size);
 	std::set<std::string> DrawCities(std::vector<Address*>& addresses);
 	std::set<std::string> DrawStreets(std::vector<Address*>& addresses, const char* city);
