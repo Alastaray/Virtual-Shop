@@ -10,10 +10,60 @@ namespace Display
 		cls();
 		int size = 1;
 		std::cout <<
-			"\n\t0. Sing up\n" <<
-			"\t1. Sing in\n" <<
-			"\t2. Exit\n";
-		return GetNumber(size, '2');
+			"\n\t1. Sing up\n" <<
+			"\t2. Sing in\n" <<
+			"\t3. Exit\n";
+		return GetNumber(size, '3', '1');
+	}
+	int DrawSubMenu()
+	{
+		cls();
+		int size = 1;
+		std::cout <<
+			"\n\t1. Add new real estate\n" <<
+			"\t2. Remove real estate\n" <<
+			"\t3. Show all real estate\n" <<
+			"\t4. Show user real estate\n" <<
+			"\t5. Find real estate\n" <<
+			"\t6. Back\n";
+		return GetNumber(size, '6', '1');
+	}
+	void DrawRealEstate(RealEstate* real_estate)
+	{
+		std::cout << "Rent " << real_estate->GetName() << ": " << real_estate->GetAmountRooms() << " rooms";
+		real_estate->GetFloor() ? std::cout << ", floor is " << real_estate->GetFloor() << "\n" : std::cout << "\n";
+		std::cout << "Price is " << real_estate->GetPrice() << "$\n";
+		std::cout << "Address: city is " << real_estate->GetAddress()->GetCity() << ", "
+			<< "street is " << real_estate->GetAddress()->GetStreet() << "\n";
+	}
+	void DrawPublications(std::vector<User*>& users)
+	{
+		if (users.size())
+		{
+			for (auto user : users)
+			{
+				if (user->GetPublications().size())
+					DrawPublications(user);
+			}
+		}
+		else throw std::exception("Users are not exist!");
+	}
+	void DrawPublications(User* user)
+	{
+		if (user->GetPublications().size())
+		{
+			for (size_t i = 0; i < user->GetPublications().size(); i++)
+			{
+				DrawRealEstate(user->GetPublications()[i]);
+				DrawUserInfo(user);
+				std::cout << "\n";
+			}
+		}
+		else throw std::exception("User has not publications!");
+	}
+	void DrawUserInfo(User* user)
+	{
+		std::cout << "Contact information: " << user->GetNickname() << " (" << user->GetRank() << ")\n";
 	}
 	std::pair<const char*, const char*> DrawLoginMenu(unsigned nickname_size, unsigned password_size)
 	{
@@ -26,130 +76,54 @@ namespace Display
 		std::cout << "Enter the your password!\n";
 		Display::GetData(password_size, password);
 		return { nickname, password };
-	}
-	void DrawUser(User* user)
+	}	
+	std::set<std::string> DrawCities(std::vector<Address*>& addresses)
 	{
-		if (user)
+		std::set<std::string> cities;
+		for (auto address : addresses)
 		{
-			std::cout << "\t" <<
-				user->GetId() << "\t" <<
-				user->GetNickname() << "\t\t" <<
-				user->GetPassword() << "\t\t" <<
-				user->GetPurchaseAmount() << "\t\t\t" <<
-				user->GetRank() << "\n";
+			cities.insert(address->GetCity());
 		}
-		else
+		for (auto city : cities)
 		{
-			std::cout << "User doesn't exist!";
-			_getch();
+			std::cout << city << "\n";
 		}
+		return cities;
 	}
-	void DrawUser(std::vector<User*>& users, bool is_vip, bool have_purchase)
+	std::set<std::string> DrawStreets(std::vector<Address*>& addresses, const char* city)
 	{
-		if (users.size())
+		std::set<std::string> streets;
+		for (auto address : addresses)
 		{
-			cls();
-			int counter = 0;
-			std::cout <<
-				"\n\tId\t" << "Nickname\t" << "Password\t" << "Purchase Amount\t\t" << "Rank\n";
-			for (size_t i = 0; i < users.size(); i++)
+			if (!strcmp(address->GetCity(), city))
+				streets.insert(address->GetStreet());
+		}
+		for (auto street : streets)
+		{
+			std::cout << street << "\n";
+		}
+		return streets;
+	}
+	std::string CheckUserInputInSet(std::set<std::string> set, int size_str)
+	{	
+		char* input = new char[size_str];
+		bool flag = false;
+		while (!flag)
+		{
+			GetStr(size_str, input);
+			for (auto i : set)
 			{
-				if (is_vip)
+				if (!i.compare(input))
 				{
-					if (!strcmp(users[i]->GetRank(), UserRanks::GetVip()))
-					{
-						DrawUser(users[i]);
-						counter++;
-					}
-				}
-				else if (have_purchase)
-				{
-					if (users[i]->GetPurchaseAmount())
-					{
-						DrawUser(users[i]);
-						counter++;
-					}
-				}
-				else
-				{
-					DrawUser(users[i]);
-					counter++;
-				}
+					flag = true;
+					break;
+				}					
 			}
-			if (!counter)
-			{
-				cls();
-				std::cout << "This users don't exist!\n";
-			}
-				_getch();
-		}		
-	}
-	void DrawProduct(Product* product)
-	{
-		if (product)
-		{
-			std::cout << "\t" <<
-				product->GetId() << "\t\t" <<
-				product->GetName() << "\t\t" <<
-				product->GetPrice() << "\t\t" <<
-				product->GetAmount() << "\t\t" <<
-				product->GetVipDiscount() * 100 << "%\t\t" <<
-				product->GetStatusStock() << "\n";
-		}	
-		else
-		{
-			std::cout << "Product was not added!";
-			_getch();
+			if(!flag)std::cout << "Incorrect input!\n";
 		}
-	}
-	void DrawProduct(std::vector<Product*>& products, bool all)
-	{
-		if (products.size())
-		{
-			Display::cls();
-			std::cout <<
-				"\n\tId\t\t" << "Name\t\t" << "Price\t\t" << "Amount\t\t" << "Vip Discount\t" << "Status stock\n";
-			for (size_t i = 0; i < products.size(); i++)
-			{
-				if (all)DrawProduct(products[i]);
-				else
-				{
-					if (products[i]->GetStatusStock())
-						DrawProduct(products[i]);
-				}
-			}
-		}
-		else
-		{
-			cls();
-			std::cout << "Products were not added!";
-			_getch();
-		}
-	}
-	void DrawShoppingBasket(std::vector<Product*>& bought_products, double purchase_amount)
-	{
-		if (bought_products.size())
-		{
-			Display::DrawProduct(bought_products, true);
-			std::cout << "\t\t^^^^^^^^^^^^You bought^^^^^^^^^^^^^^\n";
-			std::cout << "\nPurchase amount is " << purchase_amount;
-			_getch();
-		}
-	}
-	int DrawEmployeeMenu()
-	{
-		cls();
-		int size = 1;
-		std::cout <<
-			"\n\t0. Show all users\n" <<
-			"\t1. Show all customers, which are vip\n" <<
-			"\t2. Show all users, which have even bought one thing\n" <<
-			"\t3. Show user, which have purchase amount is the highest\n" <<
-			"\t4. Add new product\n" <<
-			"\t5. Change inventory status\n" <<
-			"\t6. Buy something\n" <<
-			"\t7. Back\n";
-		return GetNumber(size, '7');
+		std::string buff = input;
+		delete[] input;
+		return buff;
 	}
 	int GetNumber(unsigned amount_symbols, char to_number, char from_number)
 	{

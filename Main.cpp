@@ -1,59 +1,59 @@
 #include "UsersManagement.h"
-#include "ProductsManagement.h"
+#include "RealEstatesManagement.h"
 
 void main()
 {
-	std::cout.setf(std::ios::boolalpha);
-	UsersManagement users_management;
-	ProductsManagement products_management;
+	RealEstatesManagement realestate_management;
+	UsersManagement users_management;	
 	while (true)
 	{
 		try
 		{
 			switch (Display::DrawMainMenu())
 			{
-			case 0:
+			case 1:
 				users_management.SignUp();
 				break;
-			case 1:				
-				switch (users_management.SignIn())
+			case 2:				
+				if (users_management.SignIn())
 				{
-				case 1:
-					products_management.BuyProduct(users_management.GetCurrentUser());
-					break;
-				case 2:
-					int _case = -1;
-					while (_case != 7)
+					int submenu = 1;
+					while (submenu != 6)
 					{
-						_case = Display::DrawEmployeeMenu();
-						switch (_case)
+						try
 						{
-						case 0:
-							Display::DrawUser(users_management.GetUsers());
-							break;
-						case 1:
-							Display::DrawUser(users_management.GetUsers(), true);
-							break;
-						case 2:
-							Display::DrawUser(users_management.GetUsers(), false, true);
-							break;
-						case 3:
-							Display::DrawUser(users_management.GetUserSpentMost());
-							break;
-						case 4:
-							products_management.AddProduct();
-							break;
-						case 5:
-							products_management.ChangeProductStatus();
-							break;
-						case 6:
-							products_management.BuyProduct(users_management.GetCurrentUser());
-							break;
+							submenu = Display::DrawSubMenu();
+							switch (submenu)
+							{
+							case 1:
+								users_management.AddNewPublication();
+								break;
+							case 2:
+								users_management.RemovePublication();
+								break;
+							case 3:
+								Display::DrawPublications(users_management.GetUsers());
+								_getch();
+								break;
+							case 4:
+								Display::DrawPublications(users_management.GetCurrentUser());
+								_getch();
+								break;
+							case 5:
+								users_management.FindPublication();
+								break;
+							}
+						}
+						catch (const std::exception& er)
+						{
+							Display::cls();
+							std::cout << er.what();
+							_getch();
 						}
 					}					
 				}
 				break;
-			case 2:
+			case 3:
 				return;
 			}
 		}

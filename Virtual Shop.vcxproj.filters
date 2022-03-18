@@ -27,10 +27,13 @@
     <ClCompile Include="Display.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Product.cpp">
+    <ClCompile Include="RealEstate.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ProductsManagement.cpp">
+    <ClCompile Include="RealEstatesManagement.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Address.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,10 +47,13 @@
     <ClInclude Include="Display.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Product.h">
+    <ClInclude Include="RealEstate.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="ProductsManagement.h">
+    <ClInclude Include="RealEstatesManagement.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Address.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,55 +5,60 @@
 
 UsersManagement::UsersManagement()
 {
+	realestate_management = new RealEstatesManagement();
 	nickname_size = 21;
 	password_size = 16;
 	current_user = 0;
+}
+UsersManagement::~UsersManagement() 
+{
+	DeleteVector(users); 
+	delete realestate_management;
 }
 void UsersManagement::SignUp()
 {
 	Display::cls();
 	static int id = 1;
-	int rank;
+	int limit_publications;
+	char* rank;
 	bool is_customer;
+	const char broker[] = "broker";
+	const char user[] = "user";
 	std::pair<const char*, const char*> user_data;
 	std::cout << 
-		"\n\t0. As employee\n" <<
-		"\t1. As customer\n";
+		"\n\t0. I am "<< broker <<"\n" <<
+		"\t1. I am " << user << "\n";
 	is_customer = Display::GetNumber(1);
 	while (true)
 	{
 		user_data = Display::DrawLoginMenu(nickname_size, password_size);
 		if (!IsUser(user_data.first))break;
 		else std::cout << "This nickname is taken!\n";
-	}
-	
+	}	
 	if (is_customer)
 	{
-		std::cout <<
-			"\tAre you VIP?\n" <<
-			"\t0. No\n" <<
-			"\t1. Yes\n";
-		rank = Display::GetNumber(1,'1');
+		size_t size = strlen(user)+1;
+		rank = new char[size + 1];
+		strcpy_s(rank, size, user);
+		limit_publications = 3;
 	}
 	else
 	{
-		std::cout <<
-			"\tEnter the your rank!\n" <<
-			"\tFor example:\n" <<
-			"\t2. " << UserRanks::GetEmployee() << "\n" <<
-			"\t3. " << UserRanks::GetManager() << "\n" <<
-			"\t4. " << UserRanks::GetDirector() << "\n";
-		rank = Display::GetNumber(1, '4', '2');
+		size_t size = strlen(broker)+1;
+		rank = new char[size + 1];
+		strcpy_s(rank, size, broker);
+		limit_publications = 10;
 	}
-	
-	users.push_back(new User(id, user_data.first, user_data.second, UserRanks::IntToRank(rank)));
+
+	users.push_back(new User(id, user_data.first, user_data.second, rank, limit_publications));
 	id++;
 	std::cout << "Registration Success!\n";
 	delete[]user_data.first;
 	delete[]user_data.second;
+	delete[]rank;
 	_getch();
 }
-int UsersManagement::SignIn()
+bool UsersManagement::SignIn()
 {
 	Display::cls();
 	if (users.size())
@@ -74,52 +79,74 @@ int UsersManagement::SignIn()
 		delete[]user_data.second;
 		if (registered)
 		{
-			std::cout << "Hello, " << users[i]->GetNickname()<<" ("<< users[i]->GetRank() <<")";
 			current_user = i;
-			_getch();
-			if (IsCustomer(users[i]->GetRank()))return 1;
-			else return 2;		
+			return true;
 		}
 		else
 			std::cout << "Nickname or password is wrong!\n";				
 	}
 	else
-		std::cout << "No one hasn't registration yet!\n";
+		std::cout << "No one hasn't registration yet!\n";	
 	_getch();
 	return false;
 }
-User* UsersManagement::GetUserSpentMost()
+void UsersManagement::RemovePublication()
 {
-	Display::cls();
-	if (users.size())
+	User* current_user = GetCurrentUser();
+	decltype(auto) publications = current_user->GetPublications();
+	Display::DrawPublications(current_user);
+	std::cout << "\nEnter the real estate name\n";
+	int size_str = 30;
+	char* name = new char[size_str];
+	bool flag = false;
+	while (!flag)
 	{
-		std::cout << "\n";
-		int max = 0,
-			index_max = 0;
-		bool is_user_spent_most = false;
-		for (size_t i = 0; i < users.size(); i++)
+		Display::GetStr(size_str, name);
+		for (auto i = publications.begin(); i < publications.end(); i++)
 		{
-			if (users[i]->GetPurchaseAmount() > 0)
+			if (!strcmp(name, (*i)->GetName()))
 			{
-				max = users[i]->GetPurchaseAmount();
-				index_max = i;
-				is_user_spent_most = true;
+				delete* i;
+				publications.erase(i);
+				break;
 			}
 		}
-		if (is_user_spent_most)return users[index_max];
+		if (!flag)std::cout << "Incorrect name!\n";
 	}
-	return 0;
+	std::cout << "Successfully deleting!\n";
+	_getch();
 }
-User* UsersManagement::GetCurrentUser()
+void UsersManagement::AddNewPublication()
 {
-	if (users.size())return users[current_user];
-	throw std::exception("No one hasn't registration yet!\n");
+	if (GetCurrentUser()->GetPublications().size() < GetCurrentUser()->GetLimitPublications())
+	{
+		RealEstate* real_estate = realestate_management->CreateRealEstate();
+		GetCurrentUser()->AddPublication(real_estate);
+		std::cout << "Real estate successfully added!\n";
+	}
+	else
+		std::cout << "You can't exceed the limit of publication!\n";
+	_getch();
 }
-bool UsersManagement::IsCustomer(const char* rank)
+void UsersManagement::FindPublication()
 {
-	if (!strcmp(rank, UserRanks::GetNoVip()) || !strcmp(rank, UserRanks::GetVip()))
-		return true;
-	return false;
+	const int str_size = 30;
+	Address* address = realestate_management->GetLocation(str_size);
+	for (auto user : users)
+	{
+		decltype(auto) publications = user->GetPublications();
+		for (int i = 0; i < publications.size(); i++)
+		{
+			if (*address == *publications[i]->GetAddress())
+			{
+				Display::DrawRealEstate(publications[i]);
+				Display::DrawUserInfo(user);
+				std::cout << "\n";
+			}
+		}
+	}
+	delete address;
+	_getch();
 }
 bool UsersManagement::IsUser(const char* nickname)
 {
